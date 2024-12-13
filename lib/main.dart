@@ -25,6 +25,8 @@ class _DockScreenState extends State<DockScreen> {
   late List<IconData> dockItems;
 
   int? draggedIndex;
+  int? currentIndex;
+  int? newIndex;
   Offset dragStartPosition = Offset.zero;
   Offset dragCurrentPosition = Offset.zero;
 
@@ -47,14 +49,14 @@ class _DockScreenState extends State<DockScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
+      backgroundColor: Colors.blue,
       body: Center(
         child: Container(
-          width: MediaQuery.of(context).size.width / 2,
-          height: 100,
+          width: MediaQuery.of(context).size.width * 0.65,
+          height: 80,
           margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.7),
+            color: Colors.black.withOpacity(0.2),
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
@@ -155,14 +157,15 @@ class _DockScreenState extends State<DockScreen> {
     if (draggedIndex == null) return;
 
     final draggedItem = dockItems[draggedIndex!];
-    int targetIndex = (deltaX / 64).floor();  // Calculate target index based on movement
-    targetIndex = targetIndex.clamp(0, dockItems.length - 1);
+    int targetIndex = (deltaX / 44).floor();  // Calculate target index based on movement
+    targetIndex = targetIndex.clamp(currentIndex, dockItems.length - 1);
 
     if (targetIndex != currentIndex) {
       setState(() {
         dockItems.removeAt(draggedIndex!);
         dockItems.insert(targetIndex, draggedItem);
         draggedIndex = targetIndex;
+        newIndex = targetIndex;
       });
     }
   }
